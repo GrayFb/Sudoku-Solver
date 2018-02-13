@@ -52,3 +52,6 @@ def loese( aktPos, zeile, liste):
             loese(0, zeile+1, liste )
         else:
             loese(aktPos+1, zeile, liste)
+            
+def SudokuSolver(self):
+    loese(0,0, liste)
