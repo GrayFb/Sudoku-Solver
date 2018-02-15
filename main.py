@@ -1,7 +1,7 @@
 # Datei:    Sudokusolver.py
-# Version:  1.0
-# Datum:    13.02.2018
-# Autor:    Joules
+# Version:  1.1
+# Datum:    15.02.2018
+# Autor:    Joules and Ikeepgoing
 
 ##4 Überprüfungen:
 ## 1. Ist Feld=0?
@@ -9,49 +9,64 @@
 ## 3. Gibts sie in der Zeile?
 ## 4. Gibts sie im Block
 
-liste =
-{
-{ 2, 4, 0, 0, 9, 0, 0, 0, 0 },
-{ 5, 1, 0, 0, 0, 3, 4, 0, 9 },
-{ 0, 0, 0, 0, 6, 4, 2, 8, 1 },
-{ 0, 0, 0, 3, 0, 8, 1, 0, 0 },
-{ 1, 0, 7, 0, 0, 0, 0, 5, 3 },
-{ 0, 3, 5, 6, 0, 0, 0, 0, 4 },
-{ 0, 5, 1, 7, 0, 0, 0, 0, 2 },
-{ 0, 0, 3, 0, 2, 0, 0, 0, 0 },
-{ 0, 2, 4, 0, 1, 9, 3, 0, 0 }
-};
+liste =[[ 2, 4, 0, 0, 9, 0, 0, 0, 0 ],[ 5, 1, 0, 0, 0, 3, 4, 0, 9 ],[ 0, 0, 0, 0, 6, 4, 2, 8, 1 ],[ 0, 0, 0, 3, 0, 8, 1, 0, 0 ],[ 1, 0, 7, 0, 0, 0, 0, 5, 3 ],[ 0, 3, 5, 6, 0, 0, 0, 0, 4 ],[ 0, 5, 1, 7, 0, 0, 0, 0, 2 ],[ 0, 0, 3, 0, 2, 0, 0, 0, 0 ],[ 0, 2, 4, 0, 1, 9, 3, 0, 0 ]];
 
 
-def bedroht(akt, zahl):
+def bedroht(liste, zahl, aktPos, zeile):
+    print "bedroht"
     if liste==[]:
         return 0
     
     #Kontrolle der Zeile/Spalte
-    for  in gesetzteDamen:
-        if dieDame[0]==dame[0] or dieDame[1]==dame[1]:
+    for  k in liste[zeile]:
+        if k == zahl:
+            return 1
+    for m in range(0,8):
+        if liste[m][aktPos] == zahl:
             return 1
 
-
     #Kontrolle des Kastens
+    bPos=aktPos/3
+    bZeile=zeile/3
+    for i in range(0,8):
+        if i/3 == bZeile:
+            for j in range(0,8):
+                if j/3 == bPos:
+                    if liste[i][j]==zahl:
+                        return 1
 
-
-def loese( aktPos, zeile, liste):
-    akt=(zeile,aktPos)
+def loese(aktPos, zeile, liste):
     gesetzt=0
     zahl=1
-    while not gesetzt and zahl>9:
-        if bedroht(akt, zahl) is 1 :
-            zahl +=1
+    while gesetzt == 0 or zahl<=9:
+        if liste[zeile][aktPos]==0:
+            while zahl<=9 and gesetzt==0:
+                if bedroht(liste, zahl, aktPos, zeile):
+                    zahl=zahl+1
+                else:
+                    print zeile, aktPos, liste[zeile][aktPos], zahl
+                    liste[zeile][aktPos]=zahl
+                    gesetzt+=1
+                    print gesetzt
+
         else:
-            liste[akt]=zahl
-            gesetzt+=1
-        if aktPos is 8 and zeile is 8 :
-            print liste
-        elif zeile is 8:
-            loese(0, zeile+1, liste )
-        else:
-            loese(aktPos+1, zeile, liste)
+            if aktPos is 8:
+                loese(0, zeile+1, liste)
+            else:
+                loese(aktPos+1, zeile, liste)
             
-def SudokuSolver(self):
+        if aktPos is 8 and zeile is 8 and gesetzt==1:
+            print liste
+        elif aktPos is 8 and gesetzt==1:
+            loese(0, zeile+1, liste )
+        elif gesetzt==1:
+            loese(aktPos+1, zeile, liste)
+        else:
+            return 0
+                   
+def sudokusolver():
     loese(0,0, liste)
+
+sudokusolver()
+    
+    
